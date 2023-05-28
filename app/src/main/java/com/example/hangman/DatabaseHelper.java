@@ -1,9 +1,12 @@
 package com.example.hangman;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -80,6 +83,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+    public List<Question> loadWordsByLevel(String level) {
+        List<Question> words = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] columns = {"hint", "word"};
+        String selection = "level=?";
+        String[] selectionArgs = {level};
+
+        Cursor cursor = db.query("Words", columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                int hintIndex = cursor.getColumnIndex("hint");
+                int wordIndex = cursor.getColumnIndex("word");
+
+
+                // Check if both indices are valid
+                if (wordIndex >= 0 && hintIndex >= 0) {
+                    String hint = cursor.getString(hintIndex);
+                    String word = cursor.getString(wordIndex);
+                    words.add(new Question(hint, word));
+                }
+            }
+            cursor.close();
+        }
+        return words;
+    }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {

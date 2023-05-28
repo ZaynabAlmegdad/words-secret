@@ -178,7 +178,7 @@ public class GameFragment extends Fragment {
         for (int i = 0; i < currentWord.answer.length(); i ++) {
             result += "_ ";
         }
-        txtWord.setText(currentWord.getHint());
+        txtWord.setText(result);
     }
 
     private void checkLetter() {

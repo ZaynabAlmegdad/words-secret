@@ -112,14 +112,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return words;
     }
-    public String getLevelBasedOnScore(int score) {
-        if (score < INTERMEDIATE_THRESHOLD) {
-            return "BEGINNER";
-        } else if (score < ADVANCED_THRESHOLD) {
-            return "INTERMEDIATE";
+    public String getLevelFromScore(int score) {
+        String level;
+
+        if (score < 20) {
+            level = "BEGINNER";
+        } else if (score < 40) {
+            level = "INTERMEDIATE";
         } else {
-            return "ADVANCED";
+            level = "ADVANCED";
         }
+
+        return level;
     }
 
 

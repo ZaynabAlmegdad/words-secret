@@ -220,7 +220,13 @@ public class GameFragment extends Fragment {
                 txtWord.setText(result);
                 i = k;
                 flag = 1;
-
+                if (flag == 1) {
+                    // ...
+                    speak("Correct! The letter " + letter + " is in the word.");
+                    // ...
+                } else {
+                    speak("Incorrect! The letter " + letter + " is not in the word.");
+                }
                 if (result.indexOf("_") == -1) {
                     isStart = false;
                     txtWord.setText("You won !!");
@@ -259,13 +265,6 @@ public class GameFragment extends Fragment {
                 solve.setVisibility(View.GONE);
                 play.setVisibility(View.VISIBLE);
                 txtQuestion.setText("");
-            }
-            if (flag == 1) {
-                // ...
-                speak("Correct! The letter " + letter + " is in the word.");
-                // ...
-            } else {
-                speak("Incorrect! The letter " + letter + " is not in the word.");
             }
 
             Log.i(TAG, "count : " + count);
@@ -346,11 +345,14 @@ public class GameFragment extends Fragment {
 
     public Question pickGoodStarterWord() {
         Random random = new Random();
-        String level = "BEGINNER"; // Or "INTERMEDIATE" or "ADVANCE", depending on the desired difficulty
+        String level = getLevelBasedOnScore(GameActivity.score);
         wordList = dbHelper.loadWordsByLevel(level);
-
-        // No need for an infinite loop, just select a random word from the list
-        int index = random.nextInt(wordList.size());
-        return wordList.get(index);
+        if (wordList != null && !wordList.isEmpty()) {
+            int index = random.nextInt(wordList.size());
+            return wordList.get(index);
+        } else {
+            // If the wordList is empty, return a default question or handle the error appropriately
+            return new Question("Default hint", "Default word");
+        }
     }
 }

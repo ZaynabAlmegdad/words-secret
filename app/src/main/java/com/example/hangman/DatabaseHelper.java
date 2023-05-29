@@ -12,7 +12,9 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SecretWord.db";
     private static final int DATABASE_VERSION = 1;
-
+    private int BEGINNER_THRESHOLD = 0;
+    private int INTERMEDIATE_THRESHOLD = 10;
+    private int ADVANCED_THRESHOLD = 20;
     private static final String Words_Table =
             "CREATE TABLE Words (_id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT, level TEXT, hint TEXT)";
 
@@ -109,6 +111,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return words;
+    }
+    public String getLevelBasedOnScore(int score) {
+        if (score < INTERMEDIATE_THRESHOLD) {
+            return "BEGINNER";
+        } else if (score < ADVANCED_THRESHOLD) {
+            return "INTERMEDIATE";
+        } else {
+            return "ADVANCED";
+        }
     }
 
 

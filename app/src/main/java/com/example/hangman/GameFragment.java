@@ -18,7 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class GameFragment extends Fragment {
     private DatabaseHelper dbHelper;
     private String word;
     private String hint;
+
     private List<Question> wordList = new ArrayList<>();
     public GameFragment() {
         // Required empty public constructor
@@ -45,14 +47,29 @@ public class GameFragment extends Fragment {
     private ImageView imagHang;
     public Question currentWord;
     private int count = 0;
-
-
+    private TextToSpeech textToSpeech;
+    private int BEGINNER_THRESHOLD = 0;
+    private int INTERMEDIATE_THRESHOLD = 10;
+    private int ADVANCED_THRESHOLD = 20;
     boolean isStart = false;
     View view = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        textToSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = textToSpeech.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e(TAG, "Language not supported");
+                    }
+                } else {
+                    Log.e(TAG, "TextToSpeech initialization failed");
+                }
+            }
+        });
         view = inflater.inflate(R.layout.fragment_game, container, false);
         dbHelper = new DatabaseHelper(getActivity());
         initView();
@@ -64,6 +81,11 @@ public class GameFragment extends Fragment {
         // ...
 
         return view;
+    }
+    private void speak(String text) {
+        if (textToSpeech != null) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
     }
 
     private void initView() {
@@ -198,9 +220,11 @@ public class GameFragment extends Fragment {
                 txtWord.setText(result);
                 i = k;
                 flag = 1;
+
                 if (result.indexOf("_") == -1) {
                     isStart = false;
                     txtWord.setText("You won !!");
+                    speak("Congratulations! You won!");
                     GameActivity.score += 1;
                     GameActivity.level = String.valueOf(GameActivity.score / 2);
                     SaveData.saveData(getActivity(), "score", "" + GameActivity.score);
@@ -222,6 +246,7 @@ public class GameFragment extends Fragment {
             if (count >= 6) {
                 isStart = false;
                 txtWord.setText("You lost !!");
+                speak("You lost! Better luck next time.");
                 if (GameActivity.score > 0)
                     GameActivity.score -= 1;
                 SaveData.saveData(getActivity(), "score", "" + GameActivity.score);
@@ -235,6 +260,14 @@ public class GameFragment extends Fragment {
                 play.setVisibility(View.VISIBLE);
                 txtQuestion.setText("");
             }
+            if (flag == 1) {
+                // ...
+                speak("Correct! The letter " + letter + " is in the word.");
+                // ...
+            } else {
+                speak("Incorrect! The letter " + letter + " is not in the word.");
+            }
+
             Log.i(TAG, "count : " + count);
             if (count <= 6) {
                 int r_id = getResources().getIdentifier("hang_" + count, "drawable", getActivity().getPackageName());
@@ -266,6 +299,15 @@ public class GameFragment extends Fragment {
             return wordAndHint;
         }
 
+    public String getLevelBasedOnScore(int score) {
+        if (score < INTERMEDIATE_THRESHOLD) {
+            return "BEGINNER";
+        } else if (score < ADVANCED_THRESHOLD) {
+            return "INTERMEDIATE";
+        } else {
+            return "ADVANCED";
+        }
+    }
 
 
     private List<Question> getWordsFromDatabase() {
@@ -299,6 +341,7 @@ public class GameFragment extends Fragment {
         dbHelper.close();
         return words;
     }
+
 
 
     public Question pickGoodStarterWord() {

@@ -117,14 +117,6 @@
                 android:textSize="20dp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/hint"
-            android:layout_width="88dp"
-            android:layout_height="35dp"
-            android:textColor="#FF5722"
-            android:text="hint:"
-            android:textSize="20dp">
-        </TextView>
 
         <LinearLayout
             android:layout_width="wrap_content"

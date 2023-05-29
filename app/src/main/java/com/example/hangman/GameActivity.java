@@ -20,8 +20,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        wordList = dbHelper.loadWordsByLevel("BEGINNER");
+
         GameFragment gameFragment = new GameFragment();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

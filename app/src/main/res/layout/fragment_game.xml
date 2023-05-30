@@ -91,6 +91,17 @@
                 android:layout_marginLeft="10dp"
                 android:background="@color/y2"
                 android:text="SOLVE" />
+
+           <Button
+                android:id="@+id/hintButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/y2"
+                android:text="HINT"
+                android:tooltipText="Send an email"/>
+
         </LinearLayout>
 
         <LinearLayout

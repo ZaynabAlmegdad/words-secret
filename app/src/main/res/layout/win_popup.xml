@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/winImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/win"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:textSize="16dp"
+        android:textAlignment="center"
+        android:text="You have mastered the game!" />
+
+    <Button
+        android:id="@+id/winButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="#3b8132"
+        android:text="OK" />
+
+</LinearLayout>

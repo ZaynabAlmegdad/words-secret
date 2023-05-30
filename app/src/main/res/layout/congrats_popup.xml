@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/winImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/congratulation"
+        android:layout_marginTop="40dp"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:textSize="16dp"
+        android:textAlignment="center"
+        android:text="You have reached the end, [user name]! Congratulations on completing the game!" />
+
+
+
+
+</LinearLayout>

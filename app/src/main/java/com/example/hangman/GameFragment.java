@@ -171,7 +171,8 @@ public class GameFragment extends Fragment {
 
             }
         });
-        play.setOnClickListener(new View.OnClickListener() {
+
+          play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 count = 0;
@@ -194,7 +195,6 @@ public class GameFragment extends Fragment {
             }
         });
     }
-
 
     private void resrWord() {
         for (int i = 0; i < currentWord.answer.length(); i ++) {

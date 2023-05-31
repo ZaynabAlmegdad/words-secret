@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
@@ -39,6 +40,8 @@ public class GameFragment extends Fragment {
     private TextView txtWord;
     private TextView high;
     private TextView txtScore, txtLevel;
+    private ProgressBar progressBar;
+    private int maxLevel = 30;
     private TextView txtQuestion;
     private Button play, reset, solve;
     public String result = " ";
@@ -50,7 +53,7 @@ public class GameFragment extends Fragment {
     private TextToSpeech textToSpeech;
     private int BEGINNER_THRESHOLD = 0;
     private int INTERMEDIATE_THRESHOLD = 10;
-    private int ADVANCED_THRESHOLD = 20;
+    private int ADVANCED_THRESHOLD = 50;
     boolean isStart = false;
     View view = null;
 
@@ -73,7 +76,7 @@ public class GameFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_game, container, false);
         dbHelper = new DatabaseHelper(getActivity());
         initView();
-        String[] wordAndHint = getRandomWordAndHint(GameActivity.level);
+        String[] wordAndHint = getRandomWordAndHint(String.valueOf(GameActivity.level));
         word = wordAndHint[0];
         hint = wordAndHint[1];
 
@@ -90,6 +93,9 @@ public class GameFragment extends Fragment {
 
     private void initView() {
         getWordsFromDatabase();
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setMax(maxLevel);
+        updateProgressBar(String.valueOf(GameActivity.level));
         wordList = getWordsFromDatabase();
         dbHelper = new DatabaseHelper(requireContext());
         editAnswer = view.findViewById(R.id.letter);
@@ -109,7 +115,7 @@ public class GameFragment extends Fragment {
         txtScore = view.findViewById(R.id.score);
         txtLevel = view.findViewById(R.id.high);
         GameActivity.score = Integer.parseInt(SaveData.loadData(getActivity(), "score"));
-        GameActivity.level = String.valueOf(Integer.parseInt(SaveData.loadData(getActivity(), "level")));
+        GameActivity.level = Integer.parseInt(String.valueOf(Integer.parseInt(SaveData.loadData(getActivity(), "level"))));
         txtScore.setText("" + GameActivity.score);
         txtLevel.setText("" + GameActivity.level);
         editAnswer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -171,8 +177,7 @@ public class GameFragment extends Fragment {
 
             }
         });
-
-          play.setOnClickListener(new View.OnClickListener() {
+        play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 count = 0;
@@ -195,6 +200,7 @@ public class GameFragment extends Fragment {
             }
         });
     }
+
 
     private void resrWord() {
         for (int i = 0; i < currentWord.answer.length(); i ++) {
@@ -231,8 +237,9 @@ public class GameFragment extends Fragment {
                     isStart = false;
                     txtWord.setText("You won !!");
                     speak("Congratulations! You won!");
+                    updateProgressBar(String.valueOf(GameActivity.level));
                     GameActivity.score += 1;
-                    GameActivity.level = String.valueOf(GameActivity.score / 2);
+                    GameActivity.level = Integer.parseInt(String.valueOf(GameActivity.score / 2));
                     SaveData.saveData(getActivity(), "score", "" + GameActivity.score);
                     SaveData.saveData(getActivity(), "level", "" + GameActivity.level);
                     txtScore.setText("" + GameActivity.score);
@@ -275,28 +282,32 @@ public class GameFragment extends Fragment {
         }
         editAnswer.setText("");
     }
+    private void updateProgressBar(String level) {
+        int currentLevel = Integer.parseInt(level);
+        progressBar.setProgress(currentLevel);
+    }
     private String[] getRandomWordAndHint(String level) {
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT word, hint FROM Words WHERE level=? ORDER BY RANDOM() LIMIT 1", new String[]{level});
-            String[] wordAndHint = new String[2];
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT word, hint FROM Words WHERE level=? ORDER BY RANDOM() LIMIT 1", new String[]{level});
+        String[] wordAndHint = new String[2];
 
-            if (cursor.moveToFirst()) {
-                int wordColumnIndex = cursor.getColumnIndex("word");
-                int hintColumnIndex = cursor.getColumnIndex("hint");
+        if (cursor.moveToFirst()) {
+            int wordColumnIndex = cursor.getColumnIndex("word");
+            int hintColumnIndex = cursor.getColumnIndex("hint");
 
-                if (wordColumnIndex != -1) {
-                    wordAndHint[0] = cursor.getString(wordColumnIndex);
-                }
-
-                if (hintColumnIndex != -1) {
-                    wordAndHint[1] = cursor.getString(hintColumnIndex);
-                }
+            if (wordColumnIndex != -1) {
+                wordAndHint[0] = cursor.getString(wordColumnIndex);
             }
 
-            cursor.close();
-            db.close();
-            return wordAndHint;
+            if (hintColumnIndex != -1) {
+                wordAndHint[1] = cursor.getString(hintColumnIndex);
+            }
         }
+
+        cursor.close();
+        db.close();
+        return wordAndHint;
+    }
 
     public String getLevelBasedOnScore(int score) {
         if (score < INTERMEDIATE_THRESHOLD) {

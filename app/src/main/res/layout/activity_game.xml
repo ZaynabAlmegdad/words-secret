@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/white"
+    android:background="@color/light_grey"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -39,7 +39,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:fontFamily="@font/pangolinregular"/>
 
         <LinearLayout
             android:id="@+id/lyLetter"
@@ -62,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:textSize="40sp" />
+            android:textSize="40sp"
+            android:fontFamily="@font/pangolinregular"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,7 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:background="@color/y2"
-                android:text="PLAY" />
+                android:text="PLAY"
+                android:fontFamily="@font/pangolinregular"/>
             <Button
                 android:id="@+id/reset"
                 android:layout_width="wrap_content"
@@ -83,7 +86,8 @@
                 android:text="RESET"
                 android:layout_marginStart="10dp"
                 android:background="@color/y2"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/pangolinregular"/>
             <Button
                 android:id="@+id/solve"
                 android:text="SOLVE"
@@ -91,7 +95,8 @@
                 android:layout_width="wrap_content"
                 android:background="@color/y2"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/pangolinregular"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -103,7 +108,8 @@
                 android:layout_marginTop="8dp"
                 android:text="Your score"
                 android:textColor="#4CAF50"
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:fontFamily="@font/pangolinregular"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/score"
@@ -112,7 +118,9 @@
                 android:textColor="#4CAF50"
                 android:layout_marginLeft="20dp"
                 android:text=" 0 "
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:fontFamily="@font/pangolinregular"
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -124,7 +132,8 @@
                 android:layout_marginTop="8dp"
                 android:text="High score"
                 android:textColor="#FF5722"
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:fontFamily="@font/pangolinregular"/>
             <TextView
                 android:id="@+id/high"
                 android:layout_width="wrap_content"
@@ -133,7 +142,8 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="#FF5722"
                 android:text=" 0 "
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:fontFamily="@font/pangolinregular"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -49,7 +49,7 @@
             android:max="20"
             android:progress="0"
             android:layout_gravity="bottom"
-            android:progressDrawable="#64923c" />
+            android:progressDrawable="@drawable/custom_progress_bar" />
 
     </LinearLayout>
 
@@ -88,7 +88,7 @@
             android:max="20"
             android:progress="0"
             android:layout_gravity="bottom"
-            android:progressDrawable="#64923c" />
+            android:progressDrawable="@drawable/custom_progress_bar" />
 
     </LinearLayout>
 
@@ -128,7 +128,7 @@
             android:max="20"
             android:progress="0"
             android:layout_gravity="bottom"
-            android:progressDrawable="#64923c" />
+            android:progressDrawable="@drawable/custom_progress_bar" />
 
 
     </LinearLayout>

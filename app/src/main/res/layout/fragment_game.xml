@@ -7,13 +7,58 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/white"
+    android:background="@color/light_grey"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your score"
+                android:textColor="@color/y2"
+                android:textSize="20dp"
+                android:fontFamily="@font/pangolinregular" />
+
+            <TextView
+                android:id="@+id/score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text=" 0 "
+                android:textColor="@color/y2"
+                android:textSize="20dp"
+                android:fontFamily="@font/pangolinregular" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:text="Level"
+                android:textColor="@color/y2"
+                android:textSize="20dp"
+                android:fontFamily="@font/pangolinregular" />
+
+            <TextView
+                android:id="@+id/high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text=" 0 "
+                android:textColor="@color/y2"
+                android:textSize="20dp"
+                android:fontFamily="@font/pangolinregular" />
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/hang"
@@ -46,7 +91,7 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLMNBVCXZ"
-                android:textColor="@color/blue2" />
+                android:textColor="@color/y2" />
         </LinearLayout>
 
         <TextView
@@ -56,7 +101,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:text=""
-            android:textColor="@color/blue2"
+            android:textColor="@color/y2"
             android:textSize="40sp" />
 
         <LinearLayout
@@ -72,7 +117,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:background="@color/y2"
-                android:text="PLAY" />
+                android:text="PLAY"
+                android:fontFamily="@font/pangolinregular"/>
 
             <Button
                 android:id="@+id/reset"
@@ -81,7 +127,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:background="@color/y2"
-                android:text="RESET" />
+                android:text="RESET"
+                android:fontFamily="@font/pangolinregular"/>
 
             <Button
                 android:id="@+id/solve"
@@ -90,69 +137,22 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:background="@color/y2"
-                android:text="SOLVE" />
-
-           <Button
-                android:id="@+id/hintButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:background="@color/y2"
-                android:text="HINT"
-                android:tooltipText="Send an email"/>
-
+                android:text="SOLVE"
+                android:fontFamily="@font/pangolinregular"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+
+
+
+
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Your score"
-                android:textColor="#4CAF50"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="8dp"
-                android:text=" 0 "
-                android:textColor="#4CAF50"
-                android:textSize="20dp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Level"
-                android:textColor="#FF5722"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/high"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="8dp"
-                android:text=" 0 "
-                android:textColor="#FF5722"
-                android:textSize="20dp" />
-
-        </LinearLayout>
-
+            android:layout_marginTop="16dp"
+            android:progress="0" />
     </LinearLayout>
 </RelativeLayout>

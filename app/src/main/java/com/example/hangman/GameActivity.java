@@ -11,9 +11,9 @@ import android.os.Bundle;
 import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
-    public  static int score=0;
+    public  static int score=0, level=1;
     private List<Question> wordList;
-    public static String level="Beginner";
+
 
 
 

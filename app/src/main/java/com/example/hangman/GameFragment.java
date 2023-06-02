@@ -43,7 +43,7 @@ public class GameFragment extends Fragment {
     private ProgressBar progressBar;
     private int maxLevel = 30;
     private TextView txtQuestion;
-    private Button play, reset, solve;
+    private Button play, reset, solve,back;
     public String result = " ";
     public EditText editAnswer;
     private EditText letter;
@@ -104,6 +104,7 @@ public class GameFragment extends Fragment {
         play = view.findViewById(R.id.play);
         reset = view.findViewById(R.id.reset);
         solve = view.findViewById(R.id.solve);
+        back = view.findViewById(R.id.right_corner_button);
         editAnswer.setVisibility(View.GONE);
         reset.setVisibility(View.GONE);
         solve.setVisibility(View.GONE);
@@ -135,16 +136,22 @@ public class GameFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.length() != 0)
                     checkLetter();
             }
         });
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Go to the previous page (activity)
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

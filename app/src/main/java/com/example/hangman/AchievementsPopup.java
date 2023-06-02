@@ -35,17 +35,17 @@ public class AchievementsPopup extends PopupWindow {
     }
 
     void updateProgressBars() {
-        int beginnerScore;
-        int intermediateScore;
-        int advancedScore;
+        int beginnerScore = 0;
+        int intermediateScore = 10;
+        int advancedScore =30;
 
         mBeginnerProgress.setProgress(beginnerScore);
         mIntermediateProgress.setProgress(intermediateScore);
         mAdvancedProgress.setProgress(advancedScore);
 
-        mBeginnerText.setText(String.format(Locale.getDefault(), "%d/10", beginnerScore));
-        mIntermediateText.setText(String.format(Locale.getDefault(), "%d/20", intermediateScore));
-        mAdvancedText.setText(String.format(Locale.getDefault(), "%d/40", advancedScore));
+        mBeginnerText.setText(String.format(Locale.getDefault(), "%d/0", beginnerScore));
+        mIntermediateText.setText(String.format(Locale.getDefault(), "%d/10", intermediateScore));
+        mAdvancedText.setText(String.format(Locale.getDefault(), "%d/30", advancedScore));
     }
 }
 

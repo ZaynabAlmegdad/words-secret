@@ -30,7 +30,6 @@ import java.util.Random;
 public class GameFragment extends Fragment {
     private final static String TAG = "MainActivity";
     private DatabaseHelper dbHelper;
-    private String word;
     private String hint;
 
     private List<Question> wordList = new ArrayList<>();
@@ -51,15 +50,16 @@ public class GameFragment extends Fragment {
     public Question currentWord;
     private int count = 0;
     private TextToSpeech textToSpeech;
-    private int BEGINNER_THRESHOLD = 0;
-    private int INTERMEDIATE_THRESHOLD = 10;
-    private int ADVANCED_THRESHOLD = 50;
+    private int BEGINNER_THRESHOLD = 1;
+    private int INTERMEDIATE_THRESHOLD = 5;
+    private int ADVANCED_THRESHOLD = 10;
     boolean isStart = false;
     View view = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         textToSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -76,8 +76,9 @@ public class GameFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_game, container, false);
         dbHelper = new DatabaseHelper(getActivity());
         initView();
-        String[] wordAndHint = getRandomWordAndHint(String.valueOf(GameActivity.level));
-        word = wordAndHint[0];
+
+        String[] wordAndHint = getRandomWordAndHint(Integer.parseInt(String.valueOf(GameActivity.level)));
+        String word = wordAndHint[0];
         hint = wordAndHint[1];
 
         // Set up the game with the fetched word and hint
@@ -293,9 +294,9 @@ public class GameFragment extends Fragment {
         int currentLevel = Integer.parseInt(level);
         progressBar.setProgress(currentLevel);
     }
-    private String[] getRandomWordAndHint(String level) {
+    private String[] getRandomWordAndHint(int level) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT word, hint FROM Words WHERE level=? ORDER BY RANDOM() LIMIT 1", new String[]{level});
+        Cursor cursor = db.rawQuery("SELECT word, hint FROM Words WHERE level=? ORDER BY RANDOM() LIMIT 1", new String[]{String.valueOf(level)});
         String[] wordAndHint = new String[2];
 
         if (cursor.moveToFirst()) {
@@ -316,13 +317,20 @@ public class GameFragment extends Fragment {
         return wordAndHint;
     }
 
-    public String getLevelBasedOnScore(int score) {
+    public int getLevelBasedOnScore(int score) {
         if (score < INTERMEDIATE_THRESHOLD) {
-            return "BEGINNER";
+            return 1; // BEGINNER
         } else if (score < ADVANCED_THRESHOLD) {
-            return "INTERMEDIATE";
+            return 2; // INTERMEDIATE
         } else {
-            return "ADVANCED";
+            return 3; // ADVANCED
+        }
+    }
+    public void updateLevel() {
+        int newLevel = getLevelBasedOnScore(GameActivity.score);
+        if (newLevel != GameActivity.level) {
+            GameActivity.level = newLevel;
+            // You can also update the UI to reflect the new level
         }
     }
 
@@ -331,8 +339,8 @@ public class GameFragment extends Fragment {
         List<Question> words = new ArrayList<>();
         DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String level = "BEGINNER"; // Or "INTERMEDIATE" or "ADVANCE", depending on the desired difficulty
-        wordList = dbHelper.loadWordsByLevel(level);
+        int level = GameActivity.level; // Or "INTERMEDIATE" or "ADVANCE", depending on the desired difficulty
+        wordList = dbHelper.loadWordsByLevel(String.valueOf(level));
 
         String[] columns = new String[]{"hint", "word"};
         String selection = "level=?";
@@ -359,12 +367,10 @@ public class GameFragment extends Fragment {
         return words;
     }
 
-
-
     public Question pickGoodStarterWord() {
         Random random = new Random();
-        String level = getLevelBasedOnScore(GameActivity.score);
-        wordList = dbHelper.loadWordsByLevel(level);
+        int currentLevel = getLevelBasedOnScore(GameActivity.score);
+        List<Question> wordList = dbHelper.loadWordsByLevel(String.valueOf(currentLevel));
         if (wordList != null && !wordList.isEmpty()) {
             int index = random.nextInt(wordList.size());
             return wordList.get(index);

@@ -34,7 +34,6 @@ import java.util.Random;
 public class GameFragment extends Fragment {
     private final static String TAG = "MainActivity";
     private DatabaseHelper dbHelper;
-    private String word;
     private String hint;
 
     private List<Question> wordList = new ArrayList<>();
@@ -47,7 +46,7 @@ public class GameFragment extends Fragment {
     private ProgressBar progressBar;
     private int maxLevel = 30;
     private TextView txtQuestion;
-    private Button play, reset, solve;
+    private Button play, reset, solve,back;
     public String result = " ";
     public EditText editAnswer;
     private EditText letter;
@@ -55,15 +54,16 @@ public class GameFragment extends Fragment {
     public Question currentWord;
     private int count = 0;
     private TextToSpeech textToSpeech;
-    private int BEGINNER_THRESHOLD = 0;
+    private int BEGINNER_THRESHOLD = 1;
     private int INTERMEDIATE_THRESHOLD = 10;
-    private int ADVANCED_THRESHOLD = 50;
+    private int ADVANCED_THRESHOLD = 30;
     boolean isStart = false;
     View view = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         textToSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -80,8 +80,9 @@ public class GameFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_game, container, false);
         dbHelper = new DatabaseHelper(getActivity());
         initView();
-        String[] wordAndHint = getRandomWordAndHint(String.valueOf(GameActivity.level));
-        word = wordAndHint[0];
+
+        String[] wordAndHint = getRandomWordAndHint(Integer.parseInt(String.valueOf(GameActivity.level)));
+        String word = wordAndHint[0];
         hint = wordAndHint[1];
 
         // Set up the game with the fetched word and hint
@@ -108,6 +109,7 @@ public class GameFragment extends Fragment {
         play = view.findViewById(R.id.play);
         reset = view.findViewById(R.id.reset);
         solve = view.findViewById(R.id.solve);
+        back = view.findViewById(R.id.right_corner_button);
         editAnswer.setVisibility(View.GONE);
         reset.setVisibility(View.GONE);
         solve.setVisibility(View.GONE);
@@ -139,16 +141,22 @@ public class GameFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.length() != 0)
                     checkLetter();
             }
         });
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Go to the previous page (activity)
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -239,7 +247,7 @@ public class GameFragment extends Fragment {
                 }
                 if (result.indexOf("_") == -1) {
                     isStart = false;
-                   // txtWord.setText("You won !!");
+                    txtWord.setText("You won !!");
                     speak("Congratulations! You won!");
                     updateProgressBar(String.valueOf(GameActivity.level));
                     GameActivity.score += 1;
@@ -255,8 +263,6 @@ public class GameFragment extends Fragment {
                     solve.setVisibility(View.GONE);
                     play.setVisibility(View.VISIBLE);
                     txtQuestion.setText("");
-
-
                     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.win_popup, null);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setView(popupView);
@@ -270,7 +276,7 @@ public class GameFragment extends Fragment {
                     });
 
                     dialog.show();
-                    new CountDownTimer(10000, 1000) {
+                    new CountDownTimer(10000, 500) {
                         public void onTick(long millisUntilFinished) {}
                         public void onFinish() {
                             if (dialog != null && dialog.isShowing()) {
@@ -278,14 +284,17 @@ public class GameFragment extends Fragment {
                             }
                         }
                     }.start();
-            }
+                }
+
             }
         }
+
         if (flag == 0) {
+            speak("Incorrect! The letter " + letter + " is not in the word.");
             count = count + 1;
             if (count >= 6) {
                 isStart = false;
-               // txtWord.setText("You lost !!");
+                txtWord.setText("You lost !!");
                 speak("You lost! Better luck next time.");
                 if (GameActivity.score > 0)
                     GameActivity.score -= 1;
@@ -299,8 +308,6 @@ public class GameFragment extends Fragment {
                 solve.setVisibility(View.GONE);
                 play.setVisibility(View.VISIBLE);
                 txtQuestion.setText("");
-
-
                 View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.lose_popup, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setView(popupView);
@@ -314,7 +321,7 @@ public class GameFragment extends Fragment {
                 });
 
                 dialog.show();
-                new CountDownTimer(10000, 1000) {
+                new CountDownTimer(10000, 500) {
                     public void onTick(long millisUntilFinished) {}
                     public void onFinish() {
                         if (dialog != null && dialog.isShowing()) {
@@ -323,10 +330,6 @@ public class GameFragment extends Fragment {
                     }
                 }.start();
             }
-
-
-
-
             Log.i(TAG, "count : " + count);
             if (count <= 6) {
                 int r_id = getResources().getIdentifier("hang_" + count, "drawable", getActivity().getPackageName());
@@ -339,9 +342,9 @@ public class GameFragment extends Fragment {
         int currentLevel = Integer.parseInt(level);
         progressBar.setProgress(currentLevel);
     }
-    private String[] getRandomWordAndHint(String level) {
+    private String[] getRandomWordAndHint(int level) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT word, hint FROM Words WHERE level=? ORDER BY RANDOM() LIMIT 1", new String[]{level});
+        Cursor cursor = db.rawQuery("SELECT word, hint FROM Words WHERE level=? ORDER BY RANDOM() LIMIT 1", new String[]{String.valueOf(level)});
         String[] wordAndHint = new String[2];
 
         if (cursor.moveToFirst()) {
@@ -362,13 +365,20 @@ public class GameFragment extends Fragment {
         return wordAndHint;
     }
 
-    public String getLevelBasedOnScore(int score) {
+    public int getLevelBasedOnScore(int score) {
         if (score < INTERMEDIATE_THRESHOLD) {
-            return "BEGINNER";
+            return 1; // BEGINNER
         } else if (score < ADVANCED_THRESHOLD) {
-            return "INTERMEDIATE";
+            return 2; // INTERMEDIATE
         } else {
-            return "ADVANCED";
+            return 3; // ADVANCED
+        }
+    }
+    public void updateLevel() {
+        int newLevel = getLevelBasedOnScore(GameActivity.score);
+        if (newLevel != GameActivity.level) {
+            GameActivity.level = newLevel;
+            // You can also update the UI to reflect the new level
         }
     }
 
@@ -377,8 +387,8 @@ public class GameFragment extends Fragment {
         List<Question> words = new ArrayList<>();
         DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String level = "BEGINNER"; // Or "INTERMEDIATE" or "ADVANCE", depending on the desired difficulty
-        wordList = dbHelper.loadWordsByLevel(level);
+        int level = GameActivity.level; // Or "INTERMEDIATE" or "ADVANCE", depending on the desired difficulty
+        wordList = dbHelper.loadWordsByLevel(String.valueOf(level));
 
         String[] columns = new String[]{"hint", "word"};
         String selection = "level=?";
@@ -405,12 +415,10 @@ public class GameFragment extends Fragment {
         return words;
     }
 
-
-
     public Question pickGoodStarterWord() {
         Random random = new Random();
-        String level = getLevelBasedOnScore(GameActivity.score);
-        wordList = dbHelper.loadWordsByLevel(level);
+        int currentLevel = getLevelBasedOnScore(GameActivity.score);
+        List<Question> wordList = dbHelper.loadWordsByLevel(String.valueOf(currentLevel));
         if (wordList != null && !wordList.isEmpty()) {
             int index = random.nextInt(wordList.size());
             return wordList.get(index);

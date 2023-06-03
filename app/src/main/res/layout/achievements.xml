@@ -40,16 +40,16 @@
             android:text="Get 20 words right in the play mode"
             android:textSize="16sp" /> -->
 
-        <ProgressBar
-            android:id="@+id/beginner_progress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:max="20"
-            android:progress="0"
-            android:layout_gravity="bottom"
-            android:progressDrawable="@drawable/custom_progress_bar" />
+        <!--  <ProgressBar
+           android:id="@+id/beginner_progress"
+           style="?android:attr/progressBarStyleHorizontal"
+           android:layout_width="80dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:max="20"
+           android:progress="0"
+           android:layout_gravity="bottom"
+           android:progressDrawable="@drawable/custom_progress_bar" /> -->
 
     </LinearLayout>
 
@@ -71,15 +71,15 @@
             android:textStyle="bold"
             android:textSize="18sp" />
 
-       <!--  <TextView
+       <!-- <TextView
             android:id="@+id/intermediate_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Get 20 words right in the play mode"
-            android:textSize="16sp" /> -->
+            android:textSize="16sp" />
 
-        <ProgressBar
+           <ProgressBar
             android:id="@+id/intermediate_progress"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
             android:max="20"
             android:progress="0"
             android:layout_gravity="bottom"
-            android:progressDrawable="@drawable/custom_progress_bar" />
+            android:progressDrawable="@drawable/custom_progress_bar" /> -->
 
     </LinearLayout>
 
@@ -119,20 +119,18 @@
             android:text="Get 20 words right in the play mode"
             android:textSize="16sp" /> -->
 
-        <ProgressBar
-            android:id="@+id/advanced_progress"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_weight="1"
-            android:max="20"
-            android:progress="0"
-            android:layout_gravity="bottom"
-            android:progressDrawable="@drawable/custom_progress_bar" />
+        <!--  <ProgressBar
+           android:id="@+id/advanced_progress"
+           android:layout_width="80dp"
+           android:layout_height="wrap_content"
+           style="?android:attr/progressBarStyleHorizontal"
+           android:layout_weight="1"
+           android:max="20"
+           android:progress="0"
+           android:layout_gravity="bottom"
+           android:progressDrawable="@drawable/custom_progress_bar" /> -->
 
-
-    </LinearLayout>
-
+   </LinearLayout>
 
 </RelativeLayout>
 

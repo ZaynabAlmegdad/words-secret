@@ -27,9 +27,9 @@ public class AchievementsPopup extends PopupWindow {
        // mIntermediateText = mView.findViewById(R.id.intermediate_text);
         //mAdvancedText = mView.findViewById(R.id.advanced_text);
 
-        mBeginnerProgress = mView.findViewById(R.id.beginner_progress);
-        mIntermediateProgress = mView.findViewById(R.id.intermediate_progress);
-        mAdvancedProgress = mView.findViewById(R.id.advanced_progress);
+       // mBeginnerProgress = mView.findViewById(R.id.beginner_progress);
+        //mIntermediateProgress = mView.findViewById(R.id.intermediate_progress);
+        //mAdvancedProgress = mView.findViewById(R.id.advanced_progress);
 
         updateProgressBars();
     }
@@ -39,13 +39,13 @@ public class AchievementsPopup extends PopupWindow {
         int intermediateScore;
         int advancedScore;
 
-        mBeginnerProgress.setProgress(beginnerScore);
-        mIntermediateProgress.setProgress(intermediateScore);
-        mAdvancedProgress.setProgress(advancedScore);
+      //  mBeginnerProgress.setProgress(beginnerScore);
+      //  mIntermediateProgress.setProgress(intermediateScore);
+      //  mAdvancedProgress.setProgress(advancedScore);
 
-        mBeginnerText.setText(String.format(Locale.getDefault(), "%d/10", beginnerScore));
-        mIntermediateText.setText(String.format(Locale.getDefault(), "%d/20", intermediateScore));
-        mAdvancedText.setText(String.format(Locale.getDefault(), "%d/40", advancedScore));
+       // mBeginnerText.setText(String.format(Locale.getDefault(), "%d/10", beginnerScore));
+       // mIntermediateText.setText(String.format(Locale.getDefault(), "%d/20", intermediateScore));
+       // mAdvancedText.setText(String.format(Locale.getDefault(), "%d/40", advancedScore));
     }
 }
 

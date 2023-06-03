@@ -57,6 +57,15 @@
                 android:textColor="@color/y2"
                 android:textSize="20dp"
                 android:fontFamily="@font/pangolinregular" />
+            <Button
+                android:id="@+id/right_corner_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" back "
+                android:fontFamily="@font/pangolinregular"
+                android:layout_marginLeft="20dp"
+                android:layout_gravity="center_vertical|end"></Button>
+
         </LinearLayout>
 
 

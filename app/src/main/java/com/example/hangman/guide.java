@@ -12,7 +12,8 @@ public class guide extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.how_to_play);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Secret Word");
         back = findViewById(R.id.play_back_button);
 
         // Set an OnClickListener for the back button

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import android.content.ContentValues;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +18,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String Words_Table =
             "CREATE TABLE Words (_id INTEGER PRIMARY KEY AUTOINCREMENT, word TEXT, level TEXT, hint TEXT)";
 
+    private static final String Users_Table =
+            "CREATE TABLE users (email TEXT primary key, password TEXT)";
+
+
+    public Boolean insertData(String email, String password){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("email", email);
+        contentValues.put("password", password);
+        long result = MyDatabase.insert("users", null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public Boolean checkEmail(String email){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        Cursor cursor = MyDatabase.rawQuery("Select * from users where email = ?", new String[]{email});
+        if(cursor.getCount() > 0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+    public Boolean checkEmailPassword(String email, String password){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        Cursor cursor = MyDatabase.rawQuery("Select * from users where email = ? and password = ?", new String[]{email, password});
+        if (cursor.getCount() > 0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
     private static final String INSERT_WORDS =
             "INSERT INTO Words (word, level, hint) VALUES " +
                     "('cat', 1, 'a small domestic animal known for catching mice.'), " +
@@ -130,6 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Words_Table);
+        db.execSQL(Users_Table);
         db.execSQL(INSERT_WORDS);
     }
 
@@ -137,5 +172,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String dropTable = "DROP TABLE IF EXISTS Words_Table";
         db.execSQL(dropTable);
-        onCreate(db);    }
+
+        String dropTableU = "DROP TABLE IF EXISTS Users_Table";
+        db.execSQL(dropTableU);
+
+        onCreate(db);}
+
+
 }

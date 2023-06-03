@@ -35,9 +35,9 @@ public class AchievementsPopup extends PopupWindow {
     }
 
     void updateProgressBars() {
-        int beginnerScore;
-        int intermediateScore;
-        int advancedScore;
+        int beginnerScore= 0;
+        int intermediateScore= 10;
+        int advancedScore= 30;
 
         mBeginnerProgress.setProgress(beginnerScore);
         mIntermediateProgress.setProgress(intermediateScore);

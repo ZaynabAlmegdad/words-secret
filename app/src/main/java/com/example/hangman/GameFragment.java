@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -16,11 +17,14 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
@@ -235,7 +239,7 @@ public class GameFragment extends Fragment {
                 }
                 if (result.indexOf("_") == -1) {
                     isStart = false;
-                    txtWord.setText("You won !!");
+                   // txtWord.setText("You won !!");
                     speak("Congratulations! You won!");
                     updateProgressBar(String.valueOf(GameActivity.level));
                     GameActivity.score += 1;
@@ -251,14 +255,37 @@ public class GameFragment extends Fragment {
                     solve.setVisibility(View.GONE);
                     play.setVisibility(View.VISIBLE);
                     txtQuestion.setText("");
-                }
+
+
+                    View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.win_popup, null);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setView(popupView);
+                    final AlertDialog dialog = builder.create();
+                    ImageButton close = popupView.findViewById(R.id.closeButton);
+                    close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                    new CountDownTimer(10000, 1000) {
+                        public void onTick(long millisUntilFinished) {}
+                        public void onFinish() {
+                            if (dialog != null && dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
+                        }
+                    }.start();
+            }
             }
         }
         if (flag == 0) {
             count = count + 1;
             if (count >= 6) {
                 isStart = false;
-                txtWord.setText("You lost !!");
+               // txtWord.setText("You lost !!");
                 speak("You lost! Better luck next time.");
                 if (GameActivity.score > 0)
                     GameActivity.score -= 1;
@@ -272,7 +299,33 @@ public class GameFragment extends Fragment {
                 solve.setVisibility(View.GONE);
                 play.setVisibility(View.VISIBLE);
                 txtQuestion.setText("");
+
+
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.lose_popup, null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setView(popupView);
+                final AlertDialog dialog = builder.create();
+                ImageButton close = popupView.findViewById(R.id.closeButton);
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+                new CountDownTimer(10000, 1000) {
+                    public void onTick(long millisUntilFinished) {}
+                    public void onFinish() {
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                    }
+                }.start();
             }
+
+
+
 
             Log.i(TAG, "count : " + count);
             if (count <= 6) {

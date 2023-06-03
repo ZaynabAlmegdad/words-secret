@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "SecretWord.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private int BEGINNER_THRESHOLD = 0;
     private int INTERMEDIATE_THRESHOLD = 10;
     private int ADVANCED_THRESHOLD = 20;
@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE users (email TEXT primary key, password TEXT)";
 
 
-    public Boolean insertData(String email, String password){
+    public Boolean insertData(String email, String password) {
         SQLiteDatabase MyDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("email", email);
@@ -34,24 +34,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
     }
-    public Boolean checkEmail(String email){
+
+    public Boolean checkEmail(String email) {
         SQLiteDatabase MyDatabase = this.getWritableDatabase();
         Cursor cursor = MyDatabase.rawQuery("Select * from users where email = ?", new String[]{email});
-        if(cursor.getCount() > 0) {
+        if (cursor.getCount() > 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
-    public Boolean checkEmailPassword(String email, String password){
+
+    public Boolean checkEmailPassword(String email, String password) {
         SQLiteDatabase MyDatabase = this.getWritableDatabase();
         Cursor cursor = MyDatabase.rawQuery("Select * from users where email = ? and password = ?", new String[]{email, password});
         if (cursor.getCount() > 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
+
     private static final String INSERT_WORDS =
             "INSERT INTO Words (word, level, hint) VALUES " +
                     "('cat', 1, 'a small domestic animal known for catching mice.'), " +
@@ -119,6 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     public List<Question> loadWordsByLevel(String level) {
         List<Question> words = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -146,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return words;
     }
+
     public String getLevelFromScore(int score) {
         String level;
 
@@ -170,13 +175,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String dropTable = "DROP TABLE IF EXISTS Words_Table";
+        String dropTable = "DROP TABLE IF EXISTS Words";
         db.execSQL(dropTable);
 
-        String dropTableU = "DROP TABLE IF EXISTS Users_Table";
+        String dropTableU = "DROP TABLE IF EXISTS users";
         db.execSQL(dropTableU);
 
-        onCreate(db);}
-
-
+        onCreate(db);
+    }
 }
